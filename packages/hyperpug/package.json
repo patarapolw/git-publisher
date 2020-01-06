@@ -1,6 +1,6 @@
 {
   "name": "hyperpug",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "files": [
     "dist",
@@ -28,9 +28,9 @@
     "prepack": "yarn build && yarn browserify"
   },
   "dependencies": {
-    "eqdict": "*",
-    "indent-utils": "*",
-    "hyperscript": "^2.0.2"
+    "eqdict": "^1.0.1",
+    "hyperscript": "^2.0.2",
+    "indent-utils": "^1.0.1"
   },
   "devDependencies": {
     "@types/expect": "^24.3.0",
