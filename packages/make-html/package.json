@@ -9,7 +9,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p src/tsconfig.json",
     "test": "ts-mocha -p tests/tsconfig.json tests/**/*.spec.ts"
   },
   "dependencies": {
