@@ -8,7 +8,7 @@
   ],
   "description": "A dictionary / Record / JavaScript object can be generated from a string with Equal (=) sign",
   "main": "dist/index.js",
-  "types": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": {
     "name": "Pacharapol Withayasakpunt",
     "email": "patarapolw@gmail.com",

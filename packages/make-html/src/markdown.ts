@@ -1,5 +1,5 @@
 import showdown, { ShowdownExtension } from 'showdown'
-import { createIndentedFilter } from 'indented-filter'
+import { createIndentedFilter } from 'indent-utils'
 import h from 'hyperscript'
 import { pugConvert } from './pug'
 import qs from 'querystring'
@@ -59,12 +59,12 @@ const mdExt: {
   speak: {
     type: 'lang',
     filter: createIndentedFilter('^^speak', (s, attrs: {
-      lang: string
-      s: string
+      lang?: string
+      s?: string
     }) => {
       return h('span', {
         attrs: {
-          onclick: `window.speak("${s || attrs.s}", "${attrs.lang || ''}")`,
+          onclick: `window.speak("${s || attrs.s || ''}", "${attrs.lang || ''}")`,
         },
       }, s || 'Click to speak').outerHTML
     }),

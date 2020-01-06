@@ -5,9 +5,13 @@ import MakeHtml from '../src'
 
 const makeHtml = new MakeHtml()
 
-glob.sync(`${pkg['git-publisher'].dir}/**/*.*`, {
-  absolute: true,
-  cwd: '../..',
-}).map((el) => {
-  makeHtml.make(fs.readFileSync(el, 'utf8'))
+describe('Parse with browser or JSDOM', () => {
+  glob.sync(`${pkg['git-publisher'].dir}/**/*.*`, {
+    absolute: true,
+    cwd: '../..',
+  }).map((el) => {
+    it(el, () => {
+      makeHtml.make(fs.readFileSync(el, 'utf8'))
+    })
+  })
 })

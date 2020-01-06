@@ -7,15 +7,15 @@
     "dist"
   ],
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "prebuild": "tsc",
-    "build": "true",
+    "build": "tsc",
     "test": "ts-mocha -p tests/tsconfig.json tests/**/*.spec.ts"
   },
   "dependencies": {
-    "hyperpug": "^1.0.3",
+    "hyperpug": "*",
     "hyperscript": "^2.0.2",
-    "indented-filter": "^0.1.1",
+    "indent-utils": "*",
     "showdown": "^1.9.1"
   },
   "devDependencies": {

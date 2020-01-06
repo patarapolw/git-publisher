@@ -8,7 +8,7 @@
   ],
   "description": "Indented filter utilities, including Showdown extensions / HyperPug filters' maker",
   "main": "dist/index.js",
-  "types": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": {
     "name": "Pacharapol Withayasakpunt",
     "email": "patarapolw@gmail.com",
