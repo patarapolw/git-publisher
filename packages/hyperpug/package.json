@@ -1,6 +1,6 @@
 {
   "name": "hyperpug",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "license": "MIT",
   "files": [
     "dist",
@@ -14,7 +14,8 @@
     "email": "patarapolw@gmail.com",
     "url": "https://polvcode.dev"
   },
-  "repository": "github:patarapolw/git-publisher/packages/hyperpug",
+  "repository": "github:patarapolw/git-publisher",
+  "homepage": "https://github.com/patarapolw/git-publisher/tree/master/packages/hyperpug",
   "keywords": [
     "pug",
     "pugjs",
