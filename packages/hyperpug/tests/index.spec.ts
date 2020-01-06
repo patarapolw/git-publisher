@@ -1,9 +1,9 @@
 import fs from 'fs'
 import yaml from 'js-yaml'
 import assert from 'assert'
-import { HyperPug } from '@/hyperpug'
+import HyperPug from '@/.'
 
-const testCase = yaml.safeLoad(fs.readFileSync(`${__dirname}/hyperpug.spec.yaml`, 'utf8'))
+const testCase = yaml.safeLoad(fs.readFileSync(`${__dirname}/index.spec.yaml`, 'utf8'))
 const hp = new HyperPug()
 
 describe('HyperPug', () => {

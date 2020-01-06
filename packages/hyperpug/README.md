@@ -30,7 +30,8 @@ console.log(hp.parse(HYPERPUG_STRING))
 
 ```html
 <div id="hyperpug"></div>
-<script src="https://unpkg.com/hyperpug@:version/umd/index.min.js">
+<script src="https://unpkg.com/hyperpug@:version/umd/index.min.js"></script>
+<script>
 const hp = new HyperPug({
   hidden: (s) => {
     return `<!-- ${JSON.stringify(s)} -->`

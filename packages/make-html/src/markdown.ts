@@ -10,32 +10,34 @@ declare global {
   }
 }
 
-window.speak = (s, lang) => {
-  let trueLang = ''
+if (typeof window !== 'undefined') {
+  window.speak = (s, lang) => {
+    let trueLang = ''
 
-  const voices = speechSynthesis.getVoices()
-  const [la1, la2] = lang.split(/-_/)
-  if (la2) {
-    const langRegex = new RegExp(`${la1}[-_]${la2}`, 'i')
-    const matchedLang = voices.filter((v) => langRegex.test(v.lang))
-    if (matchedLang.length > 0) {
-      trueLang = matchedLang.sort((v1, v2) => v1.localService
-        ? -1 : v2.localService ? 1 : 0)[0].lang
+    const voices = speechSynthesis.getVoices()
+    const [la1, la2] = lang.split(/-_/)
+    if (la2) {
+      const langRegex = new RegExp(`${la1}[-_]${la2}`, 'i')
+      const matchedLang = voices.filter((v) => langRegex.test(v.lang))
+      if (matchedLang.length > 0) {
+        trueLang = matchedLang.sort((v1, v2) => v1.localService
+          ? -1 : v2.localService ? 1 : 0)[0].lang
+      }
     }
-  }
-  if (!trueLang) {
-    const langRegex = new RegExp(`^${la1}`, 'i')
-    const matchedLang = voices.filter((v) => langRegex.test(v.lang))
-    if (matchedLang.length > 0) {
-      trueLang = matchedLang.sort((v1, v2) => v1.localService
-        ? -1 : v2.localService ? 1 : 0)[0].lang
+    if (!trueLang) {
+      const langRegex = new RegExp(`^${la1}`, 'i')
+      const matchedLang = voices.filter((v) => langRegex.test(v.lang))
+      if (matchedLang.length > 0) {
+        trueLang = matchedLang.sort((v1, v2) => v1.localService
+          ? -1 : v2.localService ? 1 : 0)[0].lang
+      }
     }
-  }
 
-  if (trueLang) {
-    const u = new SpeechSynthesisUtterance(s)
-    u.lang = trueLang
-    speechSynthesis.speak(u)
+    if (trueLang) {
+      const u = new SpeechSynthesisUtterance(s)
+      u.lang = trueLang
+      speechSynthesis.speak(u)
+    }
   }
 }
 

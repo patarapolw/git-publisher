@@ -1,0 +1,17 @@
+eqdict:
+  - name: No quotes
+    input: a=b
+    expected:
+      a: b
+  - name: Numbers must be converted to strings
+    input: a=1
+    expected:
+      a: '1'
+  - name: Quoted
+    input: "'a'=\"b\" c='d'"
+    expected:
+      a: b
+      c: d
+  - name: Duplicated keys must throw Error
+    input: "a=1 'a'=b"
+    error: 'Duplicated keys: a'

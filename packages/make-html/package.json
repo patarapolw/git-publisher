@@ -13,7 +13,7 @@
     "test": "ts-mocha -p tests/tsconfig.json tests/**/*.spec.ts"
   },
   "dependencies": {
-    "hyperpug": "^0.2.1",
+    "hyperpug": "*",
     "hyperscript": "^2.0.2",
     "indented-filter": "^0.1.1",   
     "showdown": "^1.9.1"

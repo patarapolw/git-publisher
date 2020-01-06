@@ -1,38 +1,21 @@
-export function getIndent (s: string) {
-  const indents: number[] = []
-  for (const r of s.split('\n')) {
-    if (r.trim()) {
-      const m = /^ */.exec(r)
-      if (m) {
-        indents.push(m[0].length)
-      }
-    }
-  }
-
-  if (indents.length === 0) {
-    indents.push(0)
-  }
-
-  return Math.min(...indents)
-}
-
-export function stripIndent (s: string) {
-  const indent = getIndent(s)
-  return s.split('\n').map((r) => r.substr(indent)).join('\n')
-}
-
-export function eqDict (s: string) {
+export default function eqdict (s: string) {
   let k = ''
   let v = ''
 
-  const output: Record<string, string> = {}
+  const output: {
+    [key: string]: string
+  } = {}
 
   while (s.length > 0) {
-    [k, s] = eqDictConsume(s)
+    [k, s] = eqdictConsume(s)
 
     if (k) {
+      if (Object.keys(output).includes(k)) {
+        throw new Error(`Duplicated keys: ${k}`)
+      }
+
       if (s[0] === '=') {
-        [v, s] = eqDictConsume(s)
+        [v, s] = eqdictConsume(s)
         output[k] = v
       } else {
         output[k] = ''
@@ -45,7 +28,7 @@ export function eqDict (s: string) {
   return output
 }
 
-function eqDictConsume (s: string) {
+function eqdictConsume (s: string) {
   s = s.replace(/^[ =,\s]+/, '')
 
   if (!s) {

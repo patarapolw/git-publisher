@@ -1,24 +1,27 @@
 {
-  "name": "hyperpug",
-  "version": "1.0.2",
+  "name": "indent-utils",
+  "version": "1.0.0",
   "license": "MIT",
   "files": [
     "dist",
     "umd"
   ],
-  "description": "Pug for browser, based on Hyperscript",
+  "description": "Indented filter utilities, including Showdown extensions / HyperPug filters' maker",
   "main": "dist/index.js",
-  "types": "dist/index.min.js",
+  "types": "dist/index.js",
   "author": {
     "name": "Pacharapol Withayasakpunt",
     "email": "patarapolw@gmail.com",
     "url": "https://polvcode.dev"
   },
   "repository": "github:patarapolw/git-publisher",
-  "homepage": "https://github.com/patarapolw/git-publisher/tree/master/packages/hyperpug",
+  "homepage": "https://github.com/patarapolw/git-publisher/tree/master/packages/indent-utils",
   "keywords": [
+    "showdownjs",
+    "markdown",
+    "hyperpug",
     "pug",
-    "hyperscript"
+    "indent"
   ],
   "scripts": {
     "prebuild": "yarn test",
@@ -27,21 +30,18 @@
     "test": "ts-mocha --paths -p tests/tsconfig.json tests/**/*.spec.ts",
     "prepack": "yarn build && yarn browserify"
   },
-  "dependencies": {
-    "eqdict": "*",
-    "indent-utils": "*",
-    "hyperscript": "^2.0.2"
-  },
   "devDependencies": {
     "@types/expect": "^24.3.0",
     "@types/hyperscript": "^0.0.3",
     "@types/js-yaml": "^3.12.1",
     "@types/mocha": "^5.2.7",
-    "fast-glob": "^3.1.1",
     "js-yaml": "^3.13.1",
     "mocha": "^6.0.0",
     "parcel-bundler": "^1.12.4",
     "ts-mocha": "^6.0.0",
     "typescript": "^3.7.4"
+  },
+  "peerDependencies": {
+    "eqdict": "*"
   }
 }
