@@ -1,6 +1,6 @@
 {
   "name": "@local/make-html",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "license": "MIT",
   "files": [
@@ -13,9 +13,9 @@
     "test": "ts-mocha -p tests/tsconfig.json tests/**/*.spec.ts"
   },
   "dependencies": {
-    "hyperpug": "*",
+    "hyperpug": "^1.0.4",
     "hyperscript": "^2.0.2",
-    "indent-utils": "*",
+    "indent-utils": "^1.0.2",
     "showdown": "^1.9.1"
   },
   "devDependencies": {
