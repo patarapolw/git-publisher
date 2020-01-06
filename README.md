@@ -1,10 +1,11 @@
 # Git-publisher
 
-Similar to browsing in GitHub, but support
+Similar to browsing on GitHub website, but these are supported
 
 - YAML front matter
 - Custom markdown, via Showdown.js extension
 - Pug, with custom filters
+- [Reveal.js with custom Markdown](https://github.com/patarapolw/reveal-md)
 - All of above, in server-side rendering, i.e. Node.js environment
 
 ## Monorepo for HyperPug and Markdown extensions
