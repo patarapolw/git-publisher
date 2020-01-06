@@ -1,0 +1,30 @@
+getIndent:
+  - name: Base getIndent
+    input: |2
+        ### Update (2019-08-16)
+        - Custom markdown
+            - Tables and image resize with [Showdown.js](https://github.com/showdownjs/showdown), also, GitHub flavor.
+            - Clone the project to use your own!
+        - [Pug](https://pugjs.org) with [SCSS](https://sass-lang.com/) and custom markdown support
+        - HTML conversion is now done at server-side
+    expected: 2
+  - name: Mixed with blank no-indent line
+    input: |2
+        ### Update (2019-08-16)
+
+        - Custom markdown
+            - Tables and image resize with [Showdown.js](https://github.com/showdownjs/showdown), also, GitHub flavor.
+            - Clone the project to use your own!
+        - [Pug](https://pugjs.org) with [SCSS](https://sass-lang.com/) and custom markdown support
+        - HTML conversion is now done at server-side
+    expected: 2
+eqDict:
+  - name: No quotes
+    input: a=b
+    expected:
+      a: b
+  - name: Quoted
+    input: "'a'=\"b\" c='d'"
+    expected:
+      a: b
+      c: d

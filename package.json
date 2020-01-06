@@ -1,8 +1,8 @@
 {
-  "name": "mylang",
+  "name": "git-publisher",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "github:patarapolw/mylang",
+  "repository": "github:patarapolw/git-publisher",
   "author": {
     "name": "Pacharapol Withayasakpunt",
     "email": "patarapolw@gmail.com",
@@ -33,6 +33,7 @@
     "lint": "eslint ."
   },
   "git-publisher": {
-    "disqus": "patarapolw-mylang"
+    "dir": "./data",
+    "disqus": "git-publisher"
   }
 }

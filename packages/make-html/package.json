@@ -1,25 +1,31 @@
 {
-  "name": "@mylang/make-html",
+  "name": "@local/make-html",
   "version": "0.1.0",
-  "main": "dist/index.js",
-  "license": "MIT",
   "private": true,
+  "license": "MIT",
   "files": [
     "dist"
   ],
+  "main": "dist/index.js",
   "scripts": {
     "prebuild": "tsc",
-    "build": "true"
+    "build": "true",
+    "test": "ts-mocha -p tests/tsconfig.json tests/**/*.spec.ts"
   },
   "dependencies": {
-    "@types/hyperscript": "^0.0.3",
     "hyperpug": "^0.2.1",
     "hyperscript": "^2.0.2",
-    "indented-filter": "^0.1.1",
+    "indented-filter": "^0.1.1",   
     "showdown": "^1.9.1"
   },
   "devDependencies": {
     "@types/showdown": "^1.9.3",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "@types/expect": "^24.3.0",
+    "@types/hyperscript": "^0.0.3",
+    "@types/mocha": "^5.2.7",
+    "fast-glob": "^3.1.1",
+    "mocha": "^6.0.0",
+    "ts-mocha": "^6.0.0"
   }
 }

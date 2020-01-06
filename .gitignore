@@ -2,3 +2,7 @@ node_modules
 dist
 .netlify
 .DS_Store
+*.log
+.cache
+*.min.*
+umd
