@@ -11,8 +11,8 @@ Similar to browsing in GitHub, but support
 
 This repo also host these packages
 
-- [/packages/eqdict](/packages/eqdict) [![npm version](https://badge.fury.io/js/eqdict.svg)](https://badge.fury.io/js/eqdict)
-- [/packages/hyperpug](/packages/hyperpug) [![npm version](https://badge.fury.io/js/hyperpug.svg)](https://badge.fury.io/js/hyperpug)
-- [/packages/indent-utils](/packages/indent-utils) [![npm version](https://badge.fury.io/js/indent-utils.svg)](https://badge.fury.io/js/indent-utils)
+- [![npm version](https://badge.fury.io/js/eqdict.svg)](https://badge.fury.io/js/eqdict) [/packages/eqdict](/packages/eqdict)
+- [![npm version](https://badge.fury.io/js/hyperpug.svg)](https://badge.fury.io/js/hyperpug) [/packages/hyperpug](/packages/hyperpug)
+- [![npm version](https://badge.fury.io/js/indent-utils.svg)](https://badge.fury.io/js/indent-utils) [/packages/indent-utils](/packages/indent-utils)
 
 I did this, because I want to test using packages in production, easily.
