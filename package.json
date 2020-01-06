@@ -30,6 +30,7 @@
     "vue-eslint-parser": "^7.0.0"
   },
   "scripts": {
+    "lerna:publish": "lerna publish",
     "lint": "eslint ."
   },
   "git-publisher": {
