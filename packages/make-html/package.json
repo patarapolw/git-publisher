@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -p src/tsconfig.json",
-    "test": "ts-mocha -p tests/tsconfig.json tests/**/*.spec.ts"
+    "test": "ts-mocha --paths -p tests/tsconfig.json tests/**/*.spec.ts"
   },
   "dependencies": {
     "hyperpug": "^1.0.4",
