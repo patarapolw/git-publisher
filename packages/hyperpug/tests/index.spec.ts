@@ -1,6 +1,8 @@
 import fs from 'fs'
-import yaml from 'js-yaml'
 import assert from 'assert'
+
+import yaml from 'js-yaml'
+
 import HyperPug from '@/.'
 
 const testCase = yaml.safeLoad(fs.readFileSync(`${__dirname}/index.spec.yaml`, 'utf8'))

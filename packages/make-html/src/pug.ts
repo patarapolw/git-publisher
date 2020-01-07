@@ -1,11 +1,8 @@
-import HyperPug, { IHyperPugFilters } from 'hyperpug'
-import { mdConvert } from './markdown'
+import HyperPug from 'hyperpug'
+
+import { pugExt } from './ext'
 
 let hp: HyperPug | undefined
-
-const pugExt: IHyperPugFilters = {
-  markdown: (s: string) => mdConvert(s),
-}
 
 export function pugConvert (s: string) {
   if (!hp) {

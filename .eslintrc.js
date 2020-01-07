@@ -9,6 +9,10 @@ module.exports = {
     'plugin:vue/essential',
     '@vue/standard',
     '@vue/typescript',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+    'plugin:json/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -39,5 +43,18 @@ module.exports = {
         delimiter: 'none',
       },
     }],
+    'import/no-unresolved': 0,
+    'import/order': [
+      2,
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          ['parent', 'sibling', 'index'],
+        ],
+        'newlines-between': 'always',
+      },
+    ],
   },
 }

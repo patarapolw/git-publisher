@@ -1,5 +1,5 @@
-import { pugConvert } from './pug'
 import { mdConvert } from './markdown'
+import { pugConvert } from './pug'
 
 export default class MakeHtml {
   make (s: string, ext?: string): string {

@@ -1,9 +1,8 @@
-!**/.eslintrc*
+*
+!*/
+!*.js
+!*.ts
+!*.json
 node_modules
 dist
-*.svg
-*.ico
-*.json
-*.md
-*.log
-*.lock
+umd

@@ -1,8 +1,11 @@
-import glob from 'fast-glob'
 import fs from 'fs'
-import pkg from '../../../package.json'
-import MakeHtml from '@/.'
 import path from 'path'
+
+import glob from 'fast-glob'
+
+import pkg from '../../../package.json'
+
+import MakeHtml from '@/.'
 
 const makeHtml = new MakeHtml()
 
