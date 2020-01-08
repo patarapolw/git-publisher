@@ -48,35 +48,18 @@ git submodule add https://github.com/patarapolw/git-publisher.git packages/git-p
 
 Now, after running `yarn install` (or simply, `yarn`), you can
 
-- Run dev server via `git-publisher .`
-- Publsh to GitHub Pages via `git-publisher . --publish`
+- Run dev server via `git-publisher`
+- Publsh to GitHub Pages via `git-publisher --publish`
 
 ## Editing the config
 
 You can edit the config in `git-publisher.(json|js|yaml)`, or `"git-publisher"` field in `package.json`.
 
-The defaults are
+The defaults can be viewed at [/default-config.js](/default-config.js).
 
-```js
-module.exports = {
-  /**
-   * The config to be sent to https://www.npmjs.com/package/gh-pages
-   */
-  ghPages: undefined,
-  /**
-   * Path the scan the directory tree
-   */
-  data: './data',
-  /**
-   * Additional path to JavaScript files, to be loaded by Vue CLI (vue.config.js)
-   * @accepts string[]
-   */
-  plugins: undefined,
-  /**
-   *  Additional page types, such as Reveal
-   */
-  pages: {
-    [type]: PATH_TO_PAGE_TYPE
-  }
-}
-```
+## Commenting
+
+Commenting system is based on <https://utteranc.es/>. To enable it, you will have to
+
+- Make sure the repo is public, otherwise your readers will not be able to view the issues/comments.
+- Make sure the utterances app is installed on the repo, otherwise users will not be able to post comments.
