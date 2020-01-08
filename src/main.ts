@@ -6,6 +6,7 @@ import router from './router'
 Vue.config.productionTip = false
 
 console.log(
+  process.env.VUE_APP_REPO,
   process.env.VUE_APP_CONFIG,
   process.env.VUE_APP_ROOT,
   process.env.VUE_APP_DREE,

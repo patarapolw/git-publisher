@@ -1,5 +1,6 @@
 const path = require('path')
 const fs = require('fs')
+const { execSync } = require('child_process')
 
 const { scan: dreeScan } = require('dree')
 const glob = require('fast-glob')
@@ -24,6 +25,9 @@ process.env.VUE_APP_PLUGINS_JS = glob.sync(config.plugins, {
   absolute: true,
   cwd: process.env.ROOT,
 }).map((f) => fs.readFileSync(f, 'utf8')).join('\n')
+process.env.VUE_APP_REPO = execSync('git config --get remote.origin.url', {
+  cwd: process.env.ROOT,
+}).toString()
 
 // module.exports = {
 //   configureWebpack: {
