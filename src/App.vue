@@ -6,12 +6,14 @@
         b-menu-list(:label="'Directory: ' + relPath")
           b-menu-item(
             v-if="dree.relativePath !== '.'"
+            icon="folder-outline"
             label="..",
             @click="upOneLevel"
           )
           b-menu-item(
             tag="a"
             v-for="d in dree.children || []"
+            :icon="d.type === 'directory' ? 'folder' : 'file-outline'"
             :label="d.name"
             :key="d.name"
             :active="d.active"
@@ -75,24 +77,24 @@ export default class App extends Vue {
       this.folderPath = this.currentPath || '.'
     }
 
-    this.$nextTick(() => {
-      this.updateFilePath()
-    });
+    if (d.relativePath === '.') {
+      this.filePath = this.filePath.startsWith('./') ? this.filePath.substr(2) : this.filePath
+    } else {
+      this.filePath = this.filePath.startsWith('./') ? `${this.dree.relativePath}/${this.filePath.substr(2)}` : this.filePath
+    }
 
     (this.dree.children || [])
       .filter((el: any) => el.relativePath === this.filePath)
       .map((el: any) => { el.active = true })
     
     this.$set(this, 'dree', d)
+
+    this.$nextTick(() => {
+      this.updateFilePath()
+    });
   }
 
   async updateFilePath() {
-    if (this.dree.relativePath === '.') {
-      this.filePath = this.filePath.startsWith('./') ? this.filePath.substr(2) : this.filePath
-    } else {
-      this.filePath = this.filePath.startsWith('./') ? `${this.dree.relativePath}/${this.filePath.substr(2)}` : this.filePath
-    }
-
     document.getElementsByTagName('title')[0].innerText = `${process.env.VUE_APP_TITLE}: ${this.filePath}`
     
     let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/${CONFIG.data}/${this.filePath}`
