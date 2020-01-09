@@ -10,15 +10,21 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^5.1.1",
+    "@patarapolw/deepfind": "^0.1.9",
+    "@types/nanoid": "^2.1.0",
+    "buefy": "^0.8.9",
     "core-js": "^3.4.4",
     "dree": "^2.4.10",
     "fast-glob": "^3.1.1",
     "gh-pages": "^2.2.0",
+    "gray-matter": "^4.0.2",
     "hyperpug": "^1.0.4",
+    "indent-utils": "^1.0.2",
     "js-yaml": "^3.13.1",
+    "nanoid": "^2.1.9",
+    "scope-css": "^1.2.1",
     "showdown": "^1.9.1",
-    "vue": "^2.6.10",
+    "vue": "2.6.0",
     "vue-class-component": "^7.0.2",
     "vue-cli-plugin-pug": "^1.0.7",
     "vue-property-decorator": "^8.3.0",
@@ -32,7 +38,7 @@
     "@vue/cli-service": "^4.1.0",
     "sass": "^1.23.7",
     "sass-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.10"
+    "vue-template-compiler": "2.6.0"
   },
   "browserslist": [
     "> 1%",

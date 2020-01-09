@@ -4,7 +4,7 @@
 const { spawnSync } = require('child_process')
 const path = require('path')
 const ghPages = require('gh-pages')
-const getConfig = require('./config')
+const { getConfig } = require('./config')
 
 const { argv } = require('yargs')
   .scriptName('git-publisher')
