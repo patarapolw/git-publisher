@@ -6,7 +6,6 @@ const { URL } = require('url')
 const { scan: dreeScan } = require('dree')
 const glob = require('fast-glob')
 const serveStatic = require('serve-static')
-const CopyPlugin = require('copy-webpack-plugin')
 
 const { getConfig, deepMerge } = require('./config')
 
@@ -42,16 +41,16 @@ module.exports = deepMerge({
     },
     historyApiFallback: false,
   },
-  configureWebpack: (webpackConfig) => {
-    if (process.env.NODE_ENV === 'production') {
-      webpackConfig.plugins.push(
-        new CopyPlugin([
-          {
-            from: path.resolve(process.env.ROOT, config.data),
-            to: 'data',
-          },
-        ]),
-      )
-    }
-  },
+  // configureWebpack: (webpackConfig) => {
+  //   if (process.env.NODE_ENV === 'production') {
+  //     webpackConfig.plugins.push(
+  //       new CopyPlugin([
+  //         {
+  //           from: path.resolve(process.env.ROOT, config.data),
+  //           to: 'data',
+  //         },
+  //       ]),
+  //     )
+  //   }
+  // },
 }, config.vueConfig)

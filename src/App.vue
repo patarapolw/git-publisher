@@ -95,7 +95,10 @@ export default class App extends Vue {
 
     document.getElementsByTagName('title')[0].innerText = `${process.env.VUE_APP_TITLE}: ${this.filePath}`
     
-    const fetchUrl = `${process.env.BASE_URL}data/${this.filePath}`
+    let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/${CONFIG.data}/${this.filePath}`
+    if (process.env.NODE_ENV !== 'production') {
+      fetchUrl = `${process.env.BASE_URL}data/${this.filePath}`
+    }
     console.log(fetchUrl)
     const raw = await fetch(fetchUrl)
       .then((r) => r.status === 200 ? r.text() : null)
