@@ -34,7 +34,6 @@ if (argv.publish || argv.build) {
     env: {
       ...process.env,
       ROOT: argv.root,
-      BUILD_PATH: argv.build,
     },
   })
 
@@ -42,7 +41,14 @@ if (argv.publish || argv.build) {
     const config = getConfig(argv.root)
     ghPages.publish(
       typeof argv.build === 'string' ? argv.build : path.resolve(argv.root, './dist'),
-      config.ghPages || config['gh-pages'],
+      config.ghPages || config['gh-pages'] || {},
+      (err) => {
+        if (err) {
+          console.error('Not published')
+        } else {
+          console.log('Published')
+        }
+      },
     )
   }
 } else {

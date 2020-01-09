@@ -5,11 +5,13 @@ const { URL } = require('url')
 
 const { scan: dreeScan } = require('dree')
 const glob = require('fast-glob')
+const serveStatic = require('serve-static')
+const CopyPlugin = require('copy-webpack-plugin')
 
 const { getConfig, deepMerge } = require('./config')
 
 const config = getConfig(process.env.ROOT)
-const dree = dreeScan(path.resolve(process.env.ROOT, config.data || './data'), config.dree)
+const dree = dreeScan(path.resolve(process.env.ROOT, config.data), config.dree)
 
 process.env.VUE_APP_CONFIG = JSON.stringify(config)
 process.env.VUE_APP_ROOT = process.env.ROOT
@@ -26,10 +28,30 @@ process.env.VUE_APP_TITLE = config.pkg.name
 process.env.VUE_APP_ROUTER_MODE = config.vueRouter.mode
 
 const repoUrlObj = new URL(repoUrl)
+const baseUrl = !config.deploy.url ? `/${repoUrlObj.pathname.match(/([^/]+)\.git$/)[1]}/` : '/'
 
 module.exports = deepMerge({
-  publicPath: !config.deploy.url ? `/${repoUrlObj.pathname.match(/([^/]+)\.git$/)[1]}` : '/',
+  publicPath: baseUrl,
+  outputDir: path.resolve(process.env.ROOT, 'dist'),
   pages: {
     index: './src/main.ts',
+  },
+  devServer: {
+    before (app) {
+      app.use(`${baseUrl}data`, serveStatic(path.resolve(process.env.ROOT, config.data)))
+    },
+    historyApiFallback: false,
+  },
+  configureWebpack: (webpackConfig) => {
+    if (process.env.NODE_ENV === 'production') {
+      webpackConfig.plugins.push(
+        new CopyPlugin([
+          {
+            from: path.resolve(process.env.ROOT, config.data),
+            to: 'data',
+          },
+        ]),
+      )
+    }
   },
 }, config.vueConfig)

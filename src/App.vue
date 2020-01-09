@@ -3,7 +3,7 @@
   .columns
     .column.is-3
       b-menu
-        b-menu-list(:label="'Directory: ' + (dree.relativePath === '.' ? '.' : `./${dree.relativePath}`)")
+        b-menu-list(:label="'Directory: ' + relPath")
           b-menu-item(
             v-if="dree.relativePath !== '.'"
             label="..",
@@ -37,62 +37,103 @@ export default class App extends Vue {
   dree: Dree = DREE
   currentPath = '.'
   filePath = 'README.md'
+  folderPath = '.'
   data = ''
+
+  get relPath() {
+    return this.folderPath === '.' ? '.' : `./${this.folderPath}`
+  }
 
   created() {
     this.currentPath = location.hash.replace(/^#/, '')
     window.addEventListener('hashchange', () => {
       this.currentPath = location.hash.replace(/^#/, '')
+      this.$nextTick(() => {
+        this.updatePath()
+      })
     })
-    this.updatePath()
+    this.$nextTick(() => {
+      this.updatePath()
+    })
   }
 
-  @Watch('currentPath')
   updatePath() {
-    Array.from(document.querySelectorAll('script[src="https://utteranc.es/client.js"]')).forEach((el) => el.remove())
-    Array.from(document.getElementsByClassName('utterances')).forEach((el) => el.remove())
+    // this.removeUtterances()
 
-    let mFileRegex = /^(?:(.+)\/[^/]+)\.[^/]+$/.exec(this.currentPath)
+    let d = deepfind(DREE, {
+      relativePath: this.currentPath || '.'
+    })[0] as Dree
 
-    if (mFileRegex) {
+    if (d.type !== 'directory') {
       this.filePath = this.currentPath
-      this.currentPath = mFileRegex[1]
+      this.folderPath = this.currentPath.replace(/(?:\/)?[^/]+$/, '') || '.'
+      d = deepfind(DREE, {
+        relativePath: this.folderPath
+      })[0] as Dree
+    } else {
+      this.filePath = './README.md'
+      this.folderPath = this.currentPath || '.'
     }
 
-    const d = deepfind(DREE, {
-      relativePath: this.currentPath
-    })[0] as any
+    this.$nextTick(() => {
+      this.updateFilePath()
+    });
 
     (this.dree.children || [])
       .filter((el: any) => el.relativePath === this.filePath)
       .map((el: any) => { el.active = true })
     
     this.$set(this, 'dree', d)
+  }
 
-    console.log(mFileRegex)
-
-    if (mFileRegex) {
-      document.getElementsByTagName('title')[0].innerText = `${process.env.VUE_APP_TITLE}: ./${this.filePath}`
+  async updateFilePath() {
+    if (this.dree.relativePath === '.') {
+      this.filePath = this.filePath.startsWith('./') ? this.filePath.substr(2) : this.filePath
     } else {
-      document.getElementsByTagName('title')[0].innerText = `${process.env.VUE_APP_TITLE}: ./${this.dree.relativePath}`
+      this.filePath = this.filePath.startsWith('./') ? `${this.dree.relativePath}/${this.filePath.substr(2)}` : this.filePath
+    }
+
+    document.getElementsByTagName('title')[0].innerText = `${process.env.VUE_APP_TITLE}: ${this.filePath}`
+    
+    const fetchUrl = `${process.env.BASE_URL}data/${this.filePath}`
+    console.log(fetchUrl)
+    const raw = await fetch(fetchUrl)
+      .then((r) => r.status === 200 ? r.text() : null)
+
+    if (raw === null) {
+      setTimeout(() => {
+        this.removeUtterances()
+      }, 100)
       this.data = `
       <span>
         Please add <code>README.md</code> to the directory as the default content for the folder.
       </span>`
+      return
     }
-  }
-
-  @Watch('filePath')
-  async updateFilePath() {
-    this.filePath = this.filePath.includes('/') ? this.filePath : `${this.dree.relativePath}/${this.filePath}`
-    const raw = await fetch(`https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/${CONFIG.data}/${this.filePath}`)
-      .then((r) => r.status === 200 ? r.text() : '')
+    this.addUtterances()
 
     const make = new MakeHtml()
-    this.data = make.make(raw, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
+    this.data = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
     this.$nextTick(() => {
       make.activate()
     })
+  }
+
+  onItemClicked(d: Dree) {
+    location.href = '#' + d.relativePath
+  }
+
+  upOneLevel() {
+    const m = /^(.+)\/[^/]+$/.exec(this.dree.relativePath)
+    if (m) {
+      location.hash = m[1]
+    } else {
+      location.hash = ''
+    }
+  }
+
+  addUtterances() {
+    this.removeUtterances()
 
     const script = document.createElement('script')
     script.src = 'https://utteranc.es/client.js'
@@ -105,17 +146,9 @@ export default class App extends Vue {
     document.body.append(script)
   }
 
-  onItemClicked(d: Dree) {
-    location.href = '#' + d.relativePath
-  }
-
-  upOneLevel() {
-    const m = /^(.+)\/[^/]+$/.exec(this.dree.relativePath)
-    if (m) {
-      location.hash = m[1]
-    } else {
-      location.hash = '.'
-    }
+  removeUtterances() {
+    Array.from(document.querySelectorAll('script[src="https://utteranc.es/client.js"]')).forEach((el) => el.remove())
+    Array.from(document.getElementsByClassName('utterances')).forEach((el) => el.remove())
   }
 }
 </script>
