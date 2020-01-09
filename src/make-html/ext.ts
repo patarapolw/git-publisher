@@ -1,6 +1,8 @@
 import { IHyperPugFilters } from 'hyperpug'
 import { ShowdownExtension } from 'showdown'
 import { createIndentedFilter } from 'indent-utils'
+// eslint-disable-next-line import/default
+import dotProp from 'dot-prop'
 
 import { mdConvert } from './markdown'
 import { pugConvert } from './pug'
@@ -12,6 +14,7 @@ export const pugExt: IHyperPugFilters = {
     style.setAttribute('data-content', s)
     return style.outerHTML
   },
+  ...(dotProp.get(window, 'gitPublisher.makeHtml.plugins.pug') || {}),
 }
 
 export const mdExt: {
@@ -31,4 +34,5 @@ export const mdExt: {
       return style.outerHTML
     }),
   },
+  ...(dotProp.get(window, 'gitPublisher.makeHtml.plugins.markdown') || {}),
 }
