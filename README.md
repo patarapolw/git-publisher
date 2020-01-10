@@ -9,7 +9,7 @@ Similar to browsing on GitHub website, but these are supported.
 
 ## Installation
 
-[Git submodules](https://git-scm.com/docs/git-submodule) + [Lerna monorepo / Yarn workspaces](https://dev.to/patarapolw/monorepo-with-three-subrepos-for-web-apps-2ohc) is highly recommended.
+[Lerna monorepo / Yarn workspaces](https://dev.to/patarapolw/monorepo-with-three-subrepos-for-web-apps-2ohc) is highly recommended.
 
 ```sh
 npm install -g yarn
@@ -40,10 +40,11 @@ Add, `./package.json` to the following.
 }
 ```
 
-After that, [submodularize](https://git-scm.com/docs/git-submodule) / clone this repo.
+After that, [clone](https://git-scm.com/docs/git-clone) or [submodularize](https://git-scm.com/docs/git-submodule) this repo.
 
 ```sh
-git submodule add https://github.com/patarapolw/git-publisher.git packages/git-publisher
+git clone https://github.com/patarapolw/git-publisher.git packages/git-publisher
+# git submodule add https://github.com/patarapolw/git-publisher.git packages/git-publisher
 ```
 
 Now, after running `yarn install` (or simply, `yarn`), you can
