@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import App from './pages/App'
+import App from './pages/App/App.vue'
 import './plugins/buefy'
 import './global'
 

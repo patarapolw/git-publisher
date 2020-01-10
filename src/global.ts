@@ -22,7 +22,7 @@ class ExternalJsLoader {
         className: 'git-publisher-plugins',
         innerHTML: process.env.VUE_APP_PLUGINS_JS + `
         window.gitPublisher.externalJs.isReady = true
-        window.gitPublisher.externalJs.map((cb) => cb())`,
+        window.gitPublisher.externalJs.queue.map((cb) => cb())`,
       }))
 
       this.isLoaded = true

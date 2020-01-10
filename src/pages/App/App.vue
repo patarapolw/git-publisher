@@ -1,3 +1,4 @@
+<template lang="pug">
 .container(style="margin-top: 1em")
   .columns
     .column.is-3
@@ -28,3 +29,7 @@
         iframe#iframe-reveal(v-if="type === 'reveal'" :src="revealUrl" frameborder="0")
         .card-content.content(v-else v-html="data")
       div(ref="comment")
+</template>
+
+<script src="./index.ts" lang="ts"></script>
+<style src="./index.scss" lang="scss"></style>

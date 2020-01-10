@@ -6,11 +6,8 @@ import matter from 'gray-matter'
 
 import { REPO, DREE, CONFIG, externalJs } from '@/global'
 import MakeHtml from '@/make-html'
-import './index.scss'
 
-@Component({
-  template: require('./index.pug').default,
-})
+@Component
 export default class App extends Vue {
   githubUrl = `https://github.com/${REPO}`
   dree: Dree = DREE
