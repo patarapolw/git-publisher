@@ -1,5 +1,7 @@
 import showdown from 'showdown'
 import matter from 'gray-matter'
+import yaml from 'js-yaml'
+import h from 'hyperscript'
 
 import { mdExt } from './ext'
 
@@ -13,5 +15,16 @@ export function mdConvert (s: string) {
     isInit = true
   }
 
-  return mdConverter.makeHtml(matter(s).content)
+  const { data, content } = matter(s)
+
+  return (Object.keys(data).length > 0 ? h('details', {
+    style: 'margin-bottom: 2em',
+  }, [
+    h('summary', [
+      h('strong', data.title),
+    ]),
+    h('pre', [
+      h('code.language-yaml', yaml.safeDump(data)),
+    ]),
+  ]).outerHTML : '') + mdConverter.makeHtml(content)
 }

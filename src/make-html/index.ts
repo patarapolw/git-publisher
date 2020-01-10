@@ -4,6 +4,12 @@ import nanoid from 'nanoid'
 import { mdConvert } from './markdown'
 import { pugConvert } from './pug'
 
+declare global {
+  interface Window {
+    Prism: typeof import('prismjs')
+  }
+}
+
 export default class MakeHtml {
   id = nanoid()
 
@@ -22,6 +28,8 @@ export default class MakeHtml {
   }
 
   activate () {
+    window.Prism.highlightAllUnder(document.getElementById(this.id)!)
+
     Array.from(document.getElementsByTagName('style')).forEach((el) => {
       const content = el.getAttribute('content')
       if (content) {

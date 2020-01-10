@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@patarapolw/deepfind": "^0.1.9",
+    "@types/hyperscript": "^0.0.3",
+    "@types/js-yaml": "^3.12.1",
     "@types/nanoid": "^2.1.0",
+    "@types/prismjs": "^1.16.0",
     "buefy": "^0.8.9",
     "copy-webpack-plugin": "^5.1.1",
     "core-js": "^3.4.4",
@@ -21,6 +24,7 @@
     "gh-pages": "^2.2.0",
     "gray-matter": "^4.0.2",
     "hyperpug": "^1.0.4",
+    "hyperscript": "^2.0.2",
     "indent-utils": "^1.0.2",
     "js-yaml": "^3.13.1",
     "nanoid": "^2.1.9",

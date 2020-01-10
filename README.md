@@ -70,6 +70,5 @@ Commenting system is based on <https://utteranc.es/>. To enable it, you will hav
 
 ## Plans
 
-- YAML front matter usage, e.g. search bar
-- YAML front matter printing, e.g. via spoiler
+- YAML front matter usage, e.g. to search in a search box
 - Custom page type, e.g., [Reveal-md](https://github.com/patarapolw/reveal-md)
