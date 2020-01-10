@@ -24,6 +24,7 @@
     .column
       .card
         .card-content.content(v-html="data")
+      div(ref="comment")
 </template>
 
 <script lang="ts">
@@ -138,8 +139,6 @@ export default class App extends Vue {
   }
 
   addUtterances() {
-    this.removeUtterances()
-
     const script = document.createElement('script')
     script.src = 'https://utteranc.es/client.js'
     script.setAttribute('repo', REPO)
@@ -148,12 +147,19 @@ export default class App extends Vue {
     script.crossOrigin = 'anonymous'
     script.async = true
 
-    document.body.append(script)
+    this.removeUtterances()
+    const commentRef = this.$refs.comment as HTMLDivElement
+    if (commentRef) {
+      commentRef.append(script)
+    }
   }
 
   removeUtterances() {
-    Array.from(document.querySelectorAll('script[src="https://utteranc.es/client.js"]')).forEach((el) => el.remove())
-    Array.from(document.getElementsByClassName('utterances')).forEach((el) => el.remove())
+    const commentRef = this.$refs.comment as HTMLDivElement
+    if (commentRef) {
+      Array.from(commentRef.getElementsByTagName('script')).forEach((el) => el.remove())
+      Array.from(commentRef.getElementsByClassName('utterances')).forEach((el) => el.remove())
+    }
   }
 }
 </script>
