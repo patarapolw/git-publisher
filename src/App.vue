@@ -26,8 +26,7 @@
           b-menu-item(icon="github-circle" label="GitHub" v-if="githubUrl" tag="a" :href="githubUrl")
     .column
       .card
-        .card-content(v-if="type === 'reveal'")
-          iframe(:src="revealUrl" frameborder="0" style="width: 100%; height: 40vw;")
+        iframe#iframe-reveal(v-if="type === 'reveal'" :src="revealUrl" frameborder="0")
         .card-content.content(v-else v-html="data")
       div(ref="comment")
 </template>
@@ -89,6 +88,8 @@ export default class App extends Vue {
   }
 
   updatePath() {
+    this.currentPath = decodeURIComponent(this.currentPath)
+
     let d = deepfind(DREE, {
       relativePath: this.currentPath || '.'
     })[0] as Dree
@@ -200,5 +201,16 @@ export default class App extends Vue {
 html, body, #app {
   width: 100%;
   height: 100%;
+}
+
+#iframe-reveal {
+  width: 100%;
+  height: 40vw;
+}
+
+@media only screen and (max-width: 770px) {
+  #iframe-reveal {
+    height: 60vw;
+  } 
 }
 </style>
