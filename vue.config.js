@@ -34,6 +34,7 @@ module.exports = deepMerge({
   outputDir: path.resolve(process.env.ROOT, 'dist'),
   pages: {
     index: './src/main.ts',
+    reveal: './src/reveal.ts',
   },
   devServer: {
     before (app) {

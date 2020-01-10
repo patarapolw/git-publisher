@@ -26,7 +26,9 @@
           b-menu-item(icon="github-circle" label="GitHub" v-if="githubUrl" tag="a" :href="githubUrl")
     .column
       .card
-        .card-content.content(v-html="data")
+        .card-content(v-if="type === 'reveal'")
+          iframe(:src="revealUrl" frameborder="0" style="width: 100%; height: 40vw;")
+        .card-content.content(v-else v-html="data")
       div(ref="comment")
 </template>
 
@@ -37,6 +39,7 @@ import { Dree } from 'dree'
 import deepfind from '@patarapolw/deepfind'
 import MakeHtml from './make-html'
 import h from 'hyperscript'
+import matter from 'gray-matter'
 
 @Component
 export default class App extends Vue {
@@ -46,6 +49,7 @@ export default class App extends Vue {
   filePath = 'README.md'
   folderPath = '.'
   data = ''
+  type: string | null = null
 
   get relativePathHtml() {
     if (this.folderPath === '.') {
@@ -65,6 +69,10 @@ export default class App extends Vue {
 
       return h('span', pathArray).outerHTML
     }
+  }
+
+  get revealUrl () {
+    return `${process.env.BASE_URL}reveal.html?filePath=${encodeURIComponent(this.filePath)}`
   }
 
   created() {
@@ -135,14 +143,18 @@ export default class App extends Vue {
         Please add <code>README.md</code> to the directory as the default content for the folder.
       </span>`
       return
+    } else {
+      this.type = matter(raw).data.type || null
     }
     this.addUtterances()
 
-    const make = new MakeHtml()
-    this.data = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
-    this.$nextTick(() => {
-      make.activate()
-    })
+    if (this.type !== 'reveal') {
+      const make = new MakeHtml()
+      this.data = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
+      this.$nextTick(() => {
+        make.activate()
+      })
+    }
   }
 
   onItemClicked(d: Dree) {
