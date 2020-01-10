@@ -210,7 +210,7 @@ html, body, #app {
 
 @media only screen and (max-width: 770px) {
   #iframe-reveal {
-    height: 60vw;
+    height: 70vw;
   } 
 }
 </style>
