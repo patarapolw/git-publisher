@@ -96,10 +96,12 @@ export default class App extends Vue {
       this.folderPath = this.currentPath || '.'
     }
 
-    if (d.relativePath === '.') {
-      this.filePath = this.filePath.startsWith('./') ? this.filePath.substr(2) : this.filePath
-    } else {
-      this.filePath = this.filePath.startsWith('./') ? `${this.dree.relativePath}/${this.filePath.substr(2)}` : this.filePath
+    if (this.filePath.startsWith('./')) {
+      if (d.relativePath === '.') {
+        this.filePath = this.filePath.substr(2)
+      } else if (d.type === 'directory') {
+        this.filePath = `${d.relativePath}/${this.filePath.substr(2)}`
+      }
     }
 
     (this.dree.children || [])
