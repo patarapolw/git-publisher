@@ -2,10 +2,9 @@
 
 Similar to browsing on GitHub website, but these are supported.
 
-- YAML front matter
+- YAML front matter stripping
 - Custom markdown, via Showdown.js extension
 - Pug, with custom filters
-- Custom page type. For example, [Reveal-md](https://github.com/patarapolw/reveal-md)
 
 ## Installation
 
@@ -68,3 +67,9 @@ Commenting system is based on <https://utteranc.es/>. To enable it, you will hav
 ## Real result
 
 - <https://patarapolw.github.io/mylang>
+
+## Plans
+
+- YAML front matter usage, e.g. search bar
+- YAML front matter printing, e.g. via spoiler
+- Custom page type, e.g., [Reveal-md](https://github.com/patarapolw/reveal-md)
