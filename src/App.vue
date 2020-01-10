@@ -3,7 +3,10 @@
   .columns
     .column.is-3
       b-menu
-        b-menu-list(:label="'Directory: ' + relPath")
+        b-menu-list
+          template(slot="label")
+            span(style="margin-right: 1em") Directory:
+            span(v-html="relativePathHtml")
           b-menu-item(
             v-if="dree.relativePath !== '.'"
             icon="folder-outline"
@@ -33,6 +36,7 @@ import { REPO, DREE, CONFIG } from './global'
 import { Dree } from 'dree'
 import deepfind from '@patarapolw/deepfind'
 import MakeHtml from './make-html'
+import h from 'hyperscript'
 
 @Component
 export default class App extends Vue {
@@ -43,8 +47,24 @@ export default class App extends Vue {
   folderPath = '.'
   data = ''
 
-  get relPath() {
-    return this.folderPath === '.' ? '.' : `./${this.folderPath}`
+  get relativePathHtml() {
+    if (this.folderPath === '.') {
+      return h('a', { href: '#' }, '.').outerHTML
+    } else {
+      const pathArray = [
+        h('a', { href: '#' }, '.'),
+        ...this.folderPath.split('/').map((p) => h('a', { href: `#${p}` }, p))
+      ].reduce((a, el) => {
+        return [
+          ...a,
+          h('span','/'),
+          el
+        ]
+      }, [] as HTMLElement[])
+      pathArray.shift()
+
+      return h('span', pathArray).outerHTML
+    }
   }
 
   created() {
@@ -61,8 +81,6 @@ export default class App extends Vue {
   }
 
   updatePath() {
-    // this.removeUtterances()
-
     let d = deepfind(DREE, {
       relativePath: this.currentPath || '.'
     })[0] as Dree
@@ -102,7 +120,7 @@ export default class App extends Vue {
     if (process.env.NODE_ENV !== 'production') {
       fetchUrl = `${process.env.BASE_URL}data/${this.filePath}`
     }
-    console.log(fetchUrl)
+
     const raw = await fetch(fetchUrl)
       .then((r) => r.status === 200 ? r.text() : null)
 
