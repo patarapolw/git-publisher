@@ -1,12 +1,12 @@
 import HyperPug from 'hyperpug'
 
-import { pugExt } from './ext'
+import getExtensions from './ext'
 
 let hp: HyperPug | undefined
 
 export function pugConvert (s: string) {
   if (!hp) {
-    hp = new HyperPug(pugExt)
+    hp = new HyperPug(getExtensions().pug)
   }
 
   return hp.parse(s)

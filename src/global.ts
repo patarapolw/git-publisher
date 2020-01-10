@@ -1,13 +1,17 @@
+// eslint-disable-next-line import/default
+import dotProp from 'dot-prop'
+
 export const externalJs = {
   isLoaded: false,
   isReady: false,
 }
 
+dotProp.set(window, 'gitPublisher.externalJs', externalJs)
+
 if (!externalJs.isLoaded) {
   document.body.append(Object.assign(document.createElement('script'), {
     className: 'git-publisher-plugins',
-    innerHTML: process.env.VUE_APP_PLUGINS_JS,
-    onload: () => { externalJs.isReady = true },
+    innerHTML: process.env.VUE_APP_PLUGINS_JS + '\n window.gitPublisher.externalJs.isReady = true',
   }))
 
   externalJs.isLoaded = true

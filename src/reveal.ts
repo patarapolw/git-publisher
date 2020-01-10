@@ -2,7 +2,7 @@ import RevealMd from '@patarapolw/reveal-md-core'
 
 import '@patarapolw/reveal-md-core/umd/index.css'
 import MakeHtml from './make-html'
-import { CONFIG, REPO } from './global'
+import { CONFIG, REPO, externalJs } from './global'
 
 async function main () {
   const url = new URL(location.href)
@@ -20,11 +20,15 @@ async function main () {
     placeHolder = await fetch(fetchUrl).then((r) => r.text())
   }
 
+  while (!externalJs.isReady) {
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+  }
+
   const make = new MakeHtml()
 
   new RevealMd(
     (s, ext) => {
-      return make.make(s, ext ? ext.substr(1) : '.md')
+      return make.make(s, ext ? `.${ext}` : '.md')
     },
     '',
     placeHolder,

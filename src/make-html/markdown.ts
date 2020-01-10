@@ -3,7 +3,7 @@ import matter from 'gray-matter'
 import yaml from 'js-yaml'
 import h from 'hyperscript'
 
-import { mdExt } from './ext'
+import getExtensions from './ext'
 
 const mdConverter = new showdown.Converter()
 mdConverter.setFlavor('github')
@@ -11,7 +11,7 @@ let isInit = false
 
 export function mdConvert (s: string) {
   if (!isInit) {
-    Object.entries(mdExt).map(([name, x]) => mdConverter.addExtension(x, name))
+    Object.entries(getExtensions().markdown).map(([name, x]) => mdConverter.addExtension(x, name))
     isInit = true
   }
 
