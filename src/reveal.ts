@@ -20,19 +20,17 @@ async function main () {
     placeHolder = await fetch(fetchUrl).then((r) => r.text())
   }
 
-  while (!externalJs.isReady) {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-  }
+  externalJs.onReady(() => {
+    const make = new MakeHtml()
 
-  const make = new MakeHtml()
-
-  new RevealMd(
-    (s, ext) => {
-      return make.make(s, ext ? `.${ext}` : '.md')
-    },
-    '',
-    placeHolder,
-  )
+    new RevealMd(
+      (s, ext) => {
+        return make.make(s, ext ? `.${ext}` : '.md')
+      },
+      null,
+      placeHolder,
+    )
+  })
 }
 
 main()

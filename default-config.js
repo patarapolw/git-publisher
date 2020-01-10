@@ -20,14 +20,11 @@ module.exports = {
    */
   data: './data',
   /**
-   * Additional path to JavaScript files, to be auto-loaded by Vue CLI (vue.config.js)
-   * @accepts string[]
+   * Additional path to JavaScript files, to be auto-loaded. Accepts globbing.
    */
-  plugins: [],
-  /**
-   * Path to additional page types, such as Reveal
-   */
-  pages: './pages',
+  plugins: [
+    'plugins/**/*.js',
+  ],
   /**
    * Config object to pass to Vue Router (currently only mode matters)
    */

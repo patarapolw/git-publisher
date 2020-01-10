@@ -1,21 +1,37 @@
 // eslint-disable-next-line import/default
 import dotProp from 'dot-prop'
 
-export const externalJs = {
-  isLoaded: false,
-  isReady: false,
+class ExternalJsLoader {
+  isLoaded = false
+  isReady = false
+  queue: Array<() => void> = []
+
+  onReady (cb: () => void) {
+    if (this.isLoaded) {
+      cb()
+    } else {
+      this.queue.push(cb)
+    }
+  }
+
+  load () {
+    dotProp.set(window, 'gitPublisher.externalJs', this)
+
+    if (!this.isLoaded) {
+      document.body.append(Object.assign(document.createElement('script'), {
+        className: 'git-publisher-plugins',
+        innerHTML: process.env.VUE_APP_PLUGINS_JS + `
+        window.gitPublisher.externalJs.isReady = true
+        window.gitPublisher.externalJs.map((cb) => cb())`,
+      }))
+
+      this.isLoaded = true
+    }
+  }
 }
 
-dotProp.set(window, 'gitPublisher.externalJs', externalJs)
-
-if (!externalJs.isLoaded) {
-  document.body.append(Object.assign(document.createElement('script'), {
-    className: 'git-publisher-plugins',
-    innerHTML: process.env.VUE_APP_PLUGINS_JS + '\n window.gitPublisher.externalJs.isReady = true',
-  }))
-
-  externalJs.isLoaded = true
-}
+export const externalJs = new ExternalJsLoader()
+externalJs.load()
 
 export const GIT_URL: string = process.env.VUE_APP_REPO || ''
 export const REPO = /([^/]+\/[^/]+)\.git/.exec(GIT_URL)![1] as string

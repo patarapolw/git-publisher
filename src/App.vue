@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import { Vue, Component, Watch } from 'vue-property-decorator'
-import { REPO, DREE, CONFIG } from './global'
+import { REPO, DREE, CONFIG, externalJs } from './global'
 import { Dree } from 'dree'
 import deepfind from '@patarapolw/deepfind'
 import MakeHtml from './make-html'
@@ -150,10 +150,12 @@ export default class App extends Vue {
     this.addUtterances()
 
     if (this.type !== 'reveal') {
-      const make = new MakeHtml()
-      this.data = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
-      this.$nextTick(() => {
-        make.activate()
+      externalJs.onReady(() => {
+        const make = new MakeHtml()
+        this.data = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
+        this.$nextTick(() => {
+          make.activate()
+        })
       })
     }
   }
