@@ -17,6 +17,7 @@
     "@types/js-yaml": "^3.12.1",
     "@types/nanoid": "^2.1.0",
     "@types/prismjs": "^1.16.0",
+    "@types/showdown": "^1.9.3",
     "buefy": "^0.8.9",
     "core-js": "^3.4.4",
     "dot-prop": "^5.2.0",

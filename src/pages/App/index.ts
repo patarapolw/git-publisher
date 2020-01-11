@@ -14,7 +14,7 @@ export default class App extends Vue {
   currentPath = '.'
   filePath = 'README.md'
   folderPath = '.'
-  data = ''
+  html = ''
   type: string | null = null
 
   get relativePathHtml () {
@@ -106,7 +106,7 @@ export default class App extends Vue {
       setTimeout(() => {
         this.removeUtterances()
       }, 100)
-      this.data = `
+      this.html = `
       <span>
         Please add <code>README.md</code> to the directory as the default content for the folder.
       </span>`
@@ -119,7 +119,7 @@ export default class App extends Vue {
     if (this.type !== 'reveal') {
       externalJs.onReady(() => {
         const make = new MakeHtml()
-        this.data = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
+        this.html = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
         this.$nextTick(() => {
           make.activate()
         })
