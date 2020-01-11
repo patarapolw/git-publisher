@@ -54,7 +54,7 @@ Now, after running `yarn install` (or simply, `yarn`), you can
 
 ## Editing the config
 
-You can edit the config in `git-publisher.(json|js|yaml)`, or `"git-publisher"` field in `package.json`.
+You can edit the config in `git-publisher.(json|js|yaml)`, or `"gitPublisher"` field in `package.json`.
 
 The defaults can be viewed at [/default-config.js](/default-config.js).
 

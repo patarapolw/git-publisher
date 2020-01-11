@@ -34,7 +34,7 @@ function getConfig (root) {
   } else if (fs.existsSync(path.resolve(root, 'git-publisher.yaml'))) {
     config = require('js-yaml').safeLoad(fs.readFileSync(path.resolve(root, 'git-publisher.yaml'), 'utf8'))
   } else {
-    config = pkg['git-publisher'] || {}
+    config = pkg.gitPublisher || {}
   }
 
   return {

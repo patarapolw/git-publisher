@@ -23,7 +23,7 @@ const repoUrl = execSync('git config --get remote.origin.url', {
   cwd: process.env.ROOT,
 }).toString()
 process.env.VUE_APP_REPO = repoUrl
-process.env.VUE_APP_TITLE = config.pkg.name
+process.env.VUE_APP_TITLE = config.name || config.pkg.name
 process.env.VUE_APP_ROUTER_MODE = config.vueRouter.mode
 
 const repoUrlObj = new URL(repoUrl)
