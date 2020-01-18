@@ -17,6 +17,25 @@ export default class App extends Vue {
   html = ''
   type: string | null = null
 
+  updateMeta () {
+    const title = `${this.filePath} - ${process.env.VUE_APP_TITLE}`
+    const description = this.description
+
+    document.getElementsByTagName('title')[0].innerText = title;
+    (document.querySelector('[property="og:title"]') as any).content = title;
+    (document.querySelector('[property="twitter:title"]') as any).content = title;
+
+    (document.querySelector('[name="description"]') as any).content = description;
+    (document.querySelector('[property="og:description"]') as any).content = description;
+    (document.querySelector('[property="twitter:description"]') as any).content = description
+  }
+
+  get description () {
+    const div = document.createElement('div')
+    div.innerHTML = this.html
+    return div.innerText.substr(0, 140)
+  }
+
   get relativePathHtml () {
     if (this.folderPath === '.') {
       return h('a', { href: '#' }, '.').outerHTML
@@ -92,8 +111,6 @@ export default class App extends Vue {
   }
 
   async updateFilePath () {
-    document.getElementsByTagName('title')[0].innerText = `${process.env.VUE_APP_TITLE}: ${this.filePath}`
-
     let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/${CONFIG.data}/${this.filePath}`
     if (process.env.NODE_ENV !== 'production') {
       fetchUrl = `${process.env.BASE_URL}data/${this.filePath}`
@@ -101,6 +118,10 @@ export default class App extends Vue {
 
     const raw = await fetch(fetchUrl)
       .then((r) => r.status === 200 ? r.text() : null)
+
+    this.$nextTick(() => {
+      this.updateMeta()
+    })
 
     if (raw === null) {
       setTimeout(() => {
@@ -121,9 +142,12 @@ export default class App extends Vue {
         const make = new MakeHtml()
         this.html = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
         this.$nextTick(() => {
+          this.updateMeta()
           make.activate()
         })
       })
+    } else {
+      this.html = raw!
     }
   }
 

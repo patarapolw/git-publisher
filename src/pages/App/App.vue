@@ -27,7 +27,7 @@
     .column
       .card
         iframe#iframe-reveal(v-if="type === 'reveal'" :src="revealUrl" frameborder="0")
-        .card-content.content(v-else v-html="html")
+        .card-content.content(v-else v-html="html" ref="content" id="content")
       div(ref="comment")
 </template>
 
