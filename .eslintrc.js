@@ -56,5 +56,7 @@ module.exports = {
         'newlines-between': 'always',
       },
     ],
+    'import/default': 0,
+    'import/no-named-as-default-member': 0,
   },
 }

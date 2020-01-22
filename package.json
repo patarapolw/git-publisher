@@ -6,8 +6,10 @@
     "git-publisher": "./cli.js"
   },
   "scripts": {
+    "start": "yarn serve",
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "lint": "eslint '**'"
   },
   "dependencies": {
     "@patarapolw/deepfind": "^0.1.9",

@@ -25,6 +25,6 @@ if (loc404) {
   router.push({
     path: loc.pathname.replace(new RegExp(`^${escapeRegExp(process.env.BASE_URL)}`), ''),
     hash: loc.hash,
-    query: qs.parse(loc.search)
+    query: qs.parse(loc.search),
   })
 }
