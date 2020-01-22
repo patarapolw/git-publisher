@@ -23,7 +23,7 @@ export default new VueRouter({
         '*'
       ],
       name: '404',
-      component: () => import(/* webpackChuckName: 'file' */ '../pages/404.vue'),
+      component: () => import(/* webpackChuckName: '404-page' */ '../pages/404.vue'),
     },
   ],
 })
