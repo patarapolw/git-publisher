@@ -12,15 +12,17 @@ export default new VueRouter({
       alias: [
         '/',
         '/data/*',
-        'index.html',
       ],
       component: () => import(/* webpackChuckName: 'file' */ '../pages/File/File.vue'),
     },
+    { path: '/index.html', redirect: '/' },
     {
       path: '*',
-      beforeEnter: () => {
-        location.href = `${process.env.BASE_URL}404.html`
-      },
+      component: Vue.extend({
+        created () {
+          location.href = `${process.env.BASE_URL}404.html`
+        }
+      }),
     },
   ],
 })

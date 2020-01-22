@@ -73,7 +73,10 @@ export default class App extends Vue {
 
   @Watch('$route.path')
   updatePath () {
-    this.currentPath = this.$route.path.replace(/^\/data\//, '').replace(/^\//, '') || '.'
+    this.currentPath = this.$route.path
+      .replace(/index\.html$/, '')
+      .replace(/^\/data\//, '')
+      .replace(/^\//, '') || '.'
 
     setTimeout(() => {
       this.updateMeta()
@@ -151,11 +154,12 @@ export default class App extends Vue {
         const make = new MakeHtml()
         this.html = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
         this.$nextTick(() => {
+          setTimeout(() => {
+            this.updateMeta()
+          }, 100)
+
           make.activate()
         })
-        setTimeout(() => {
-          this.updateMeta()
-        }, 100)
       })
     } else {
       this.html = raw!

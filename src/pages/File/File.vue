@@ -1,5 +1,5 @@
 <template lang="pug">
-.container(style="margin-top: 1em")
+div(style="padding: 1em;")
   .columns
     .column.is-3
       b-menu
