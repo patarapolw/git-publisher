@@ -28,7 +28,10 @@
       .card
         iframe#iframe-reveal(v-if="type === 'reveal'" :src="revealUrl" frameborder="0")
         .card-content.content(v-else v-html="html" ref="content" id="content")
-      div(ref="comment")
+      div(v-if="disqus")
+        vue-disqus(:shortname="disqus" :identifier="filePath")
+      div(v-else)
+        div(ref="comment")
 </template>
 
 <script src="./index.ts" lang="ts"></script>

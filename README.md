@@ -9,48 +9,21 @@ Similar to browsing on GitHub website, but these are supported.
 
 ## Installation
 
-[Lerna monorepo / Yarn workspaces](https://dev.to/patarapolw/monorepo-with-three-subrepos-for-web-apps-2ohc) is highly recommended.
+Simply clone the repo, and create `.env` with
 
-```sh
-npm install -g yarn
-yarn global add lerna
-yarn init -y
-git init
-lerna init
+```dotenv
+ROOT=<PATH_TO_FOLDER_CONTAINING_DATA_FOLDER>
 ```
 
-Then, change `./lerna.json` to the following.
+For example, you might add the repo as a submodule or repo in repo, for easy navigation.
 
-```json
-{
-  "version": "independent",
-  "npmClient": "yarn",
-  "useWorkspaces": true
-}
-```
+## Running and building
 
-Add, `./package.json` to the following.
+Navigate to the repo, and run `yarn serve` or `yarn build`
 
-```json
-{
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ]
-}
-```
+To publish to GitHub, you might be interested in [gh-pages](https://www.npmjs.com/package/gh-pages)
 
-After that, [clone](https://git-scm.com/docs/git-clone) or [submodularize](https://git-scm.com/docs/git-submodule) this repo.
-
-```sh
-git clone https://github.com/patarapolw/git-publisher.git packages/git-publisher
-# git submodule add https://github.com/patarapolw/git-publisher.git packages/git-publisher
-```
-
-Now, after running `yarn install` (or simply, `yarn`), you can
-
-- Run dev server via `git-publisher`
-- Publsh to GitHub Pages via `git-publisher --publish`
+- It is as simple as `gh-pages -d dist`
 
 ## Editing the config
 
@@ -64,6 +37,8 @@ Commenting system is based on <https://utteranc.es/>. To enable it, you will hav
 
 - Make sure the repo is public, otherwise your readers will not be able to view the issues/comments.
 - Make sure the utterances app is installed on the repo, otherwise users will not be able to post comments.
+
+You can also use disqus, by providing `"disqus"` field in `git-publisher.(json|js|yaml)`.
 
 ## Real result
 

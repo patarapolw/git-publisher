@@ -19,19 +19,21 @@ process.env.VUE_APP_PLUGINS_JS = glob.sync(config.plugins, {
   absolute: true,
   cwd: process.env.ROOT,
 }).map((f) => fs.readFileSync(f, 'utf8')).join('\n')
+
 const repoUrl = execSync('git config --get remote.origin.url', {
   cwd: process.env.ROOT,
 }).toString()
+const [_, repoAuthor, repoBase] = /([^/]+)\/([^/]+)\.git$/.exec(repoUrl.trim()) || []
+
 process.env.VUE_APP_REPO = repoUrl
-process.env.VUE_APP_TITLE = config.name || config.pkg.name
+process.env.VUE_APP_TITLE = config.name || config.pkg.name || `${repoAuthor}/${repoBase}`
 process.env.VUE_APP_ROUTER_MODE = config.vueRouter.mode
 
-const repoUrlObj = new URL(repoUrl)
-const baseUrl = !config.deploy.url ? `/${repoUrlObj.pathname.match(/([^/]+)\.git$/)[1]}/` : '/'
+const baseUrl = !config.baseUrl ? `/${repoBase}/` : '/'
 
 module.exports = deepMerge({
   publicPath: baseUrl,
-  outputDir: path.resolve(process.env.ROOT, 'dist'),
+  outputDir: path.resolve(process.env.ROOT, config.outputDir),
   pages: {
     index: './src/main.ts',
     reveal: './src/reveal.ts',
@@ -42,16 +44,4 @@ module.exports = deepMerge({
     },
     historyApiFallback: false,
   },
-  // configureWebpack: (webpackConfig) => {
-  //   if (process.env.NODE_ENV === 'production') {
-  //     webpackConfig.plugins.push(
-  //       new CopyPlugin([
-  //         {
-  //           from: path.resolve(process.env.ROOT, config.data),
-  //           to: 'data',
-  //         },
-  //       ]),
-  //     )
-  //   }
-  // },
 }, config.vueConfig)

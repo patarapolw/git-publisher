@@ -16,6 +16,7 @@ export default class App extends Vue {
   folderPath = '.'
   html = ''
   type: string | null = null
+  disqus = CONFIG.disqus
 
   updateMeta () {
     const title = `${this.filePath} - ${process.env.VUE_APP_TITLE}`
@@ -31,9 +32,11 @@ export default class App extends Vue {
   }
 
   get description () {
-    const div = document.createElement('div')
-    div.innerHTML = this.html
-    return div.innerText.substr(0, 140)
+    const div = this.$el.querySelector('main')
+    if (div) {
+      return div.innerText.substr(0, 140)
+    }
+    return ''
   }
 
   get relativePathHtml () {
@@ -119,9 +122,9 @@ export default class App extends Vue {
     const raw = await fetch(fetchUrl)
       .then((r) => r.status === 200 ? r.text() : null)
 
-    this.$nextTick(() => {
+    setTimeout(() => {
       this.updateMeta()
-    })
+    }, 100)
 
     if (raw === null) {
       setTimeout(() => {
@@ -142,9 +145,11 @@ export default class App extends Vue {
         const make = new MakeHtml()
         this.html = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
         this.$nextTick(() => {
-          this.updateMeta()
           make.activate()
         })
+        setTimeout(() => {
+          this.updateMeta()
+        }, 100)
       })
     } else {
       this.html = raw!

@@ -27,11 +27,15 @@ function deepMerge (dst, src) {
 function getConfig (root) {
   let config = {}
 
-  const pkg = require(path.resolve(root, 'package.json'))
+  let pkg = {}
 
-  if (fs.existsSync(path.resolve(root, 'git-publisher.js'))) {
-    config = require(path.resolve(root, 'git-publisher.js'))
-  } else if (fs.existsSync(path.resolve(root, 'git-publisher.yaml'))) {
+  if (fs.existsSync(path.join(root, 'package.json'))) {
+    pkg = require(path.join(root, 'package.json'))
+  }
+
+  if (fs.existsSync(path.join(root, 'git-publisher.js'))) {
+    config = require(path.join(root, 'git-publisher.js'))
+  } else if (fs.existsSync(path.join(root, 'git-publisher.yaml'))) {
     config = require('js-yaml').safeLoad(fs.readFileSync(path.resolve(root, 'git-publisher.yaml'), 'utf8'))
   } else {
     config = pkg.gitPublisher || {}

@@ -17,14 +17,19 @@ export function mdConvert (s: string) {
 
   const { data, content } = matter(s)
 
-  return (Object.keys(data).length > 0 ? h('details', {
-    style: 'margin-bottom: 2em',
-  }, [
-    h('summary', [
-      h('strong', data.title),
-    ]),
-    h('pre', [
-      h('code.language-yaml', yaml.safeDump(data)),
-    ]),
-  ]).outerHTML : '') + mdConverter.makeHtml(content)
+  return h('div', [
+    ...(Object.keys(data).length > 0 ? [
+      h('details', {
+        style: 'margin-bottom: 2em',
+      }, [
+        h('summary', [
+          h('strong', data.title),
+        ]),
+        h('pre', [
+          h('code.language-yaml', yaml.safeDump(data)),
+        ]),
+      ]),
+    ] : []),
+    h('main', { innerHTML: mdConverter.makeHtml(content) }),
+  ]).outerHTML
 }

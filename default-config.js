@@ -1,9 +1,5 @@
 module.exports = {
   /**
-   * The config to be sent to https://www.npmjs.com/package/gh-pages
-   */
-  ghPages: undefined,
-  /**
    * The config to be sent to https://www.npmjs.com/package/dree
    */
   dree: {
@@ -40,9 +36,12 @@ module.exports = {
    */
   branch: 'master',
   /**
-   * Set deploy url to deploy elsewhere than GitHub Pages
+   * Set baseUrl to deploy elsewhere than GitHub Pages, for example "/"
    */
-  deploy: {
-    url: '',
-  },
+  baseUrl: '',
+  outputDir: './dist',
+  /**
+   * Disqus shortname
+   */
+  disqus: '',
 }
