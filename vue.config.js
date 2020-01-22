@@ -9,6 +9,8 @@ const serveStatic = require('serve-static')
 
 const { getConfig, deepMerge } = require('./config')
 
+process.env.ROOT = path.resolve(process.env.ROOT)
+
 const config = getConfig(process.env.ROOT)
 const dree = dreeScan(path.resolve(process.env.ROOT, config.data), config.dree)
 
