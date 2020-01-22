@@ -17,7 +17,9 @@ export default new VueRouter({
     },
     {
       path: '*',
-      component: () => import(/* webpackChuckName: '404-path' */ '../pages/404.vue')
+      beforeEnter: () => {
+        location.href = `${process.env.BASE_URL}404.html`
+      }
     }
   ]
 })

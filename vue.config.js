@@ -42,7 +42,7 @@ module.exports = deepMerge({
   },
   devServer: {
     before (app) {
-      app.use(`${baseUrl}data`, serveStatic(path.resolve(process.env.ROOT, 'data')))
+      app.use(`${baseUrl}local`, serveStatic(path.resolve(process.env.ROOT, 'data')))
     },
     after (app) {
       app.use(`${baseUrl}*`, (req, res) => {

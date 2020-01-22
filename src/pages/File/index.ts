@@ -118,9 +118,9 @@ export default class App extends Vue {
   }
 
   async updateFilePath () {
-    let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/${CONFIG.data}/${this.filePath}`
+    let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/data/${this.filePath}`
     if (process.env.NODE_ENV !== 'production') {
-      fetchUrl = `${process.env.BASE_URL}data/${this.filePath}`
+      fetchUrl = `${process.env.BASE_URL}local/${this.filePath}`
     }
 
     const raw = await fetch(fetchUrl)
