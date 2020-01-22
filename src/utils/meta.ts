@@ -24,7 +24,7 @@ export function setMeta (p: {
       el = document.head.querySelector(`meta[property="${p.property}"]`)
       if (!el) {
         el = document.createElement('meta');
-        (el as any).property = p.property
+        el.setAttribute('property', p.property)
         document.head.append(el)
       }
     }
