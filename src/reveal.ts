@@ -12,9 +12,9 @@ async function main () {
   if (filePath) {
     document.getElementsByTagName('title')[0].innerText = `${process.env.VUE_APP_TITLE}: ${filePath}`
 
-    let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/${CONFIG.data}/${filePath}`
+    let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/data/${filePath}`
     if (process.env.NODE_ENV !== 'production') {
-      fetchUrl = `${process.env.BASE_URL}data/${filePath}`
+      fetchUrl = `${process.env.BASE_URL}local/${filePath}`
     }
 
     placeHolder = await fetch(fetchUrl).then((r) => r.text())

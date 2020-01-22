@@ -1,10 +1,12 @@
 const path = require('path')
 const fs = require('fs')
 const { execSync } = require('child_process')
+const url = require('url')
 
 const { scan: dreeScan } = require('dree')
 const glob = require('fast-glob')
 const serveStatic = require('serve-static')
+const escapeRegExp = require('escape-string-regexp')
 
 const { getConfig, deepMerge } = require('./config')
 
@@ -38,16 +40,30 @@ module.exports = deepMerge({
   pages: {
     index: './src/main.ts',
     reveal: './src/reveal.ts',
-    404: './src/404.ts',
+    404: './src/404.ts'
   },
   devServer: {
     before (app) {
       app.use(`${baseUrl}local`, serveStatic(path.resolve(process.env.ROOT, 'data')))
-    },
-    after (app) {
-      app.use(`${baseUrl}*`, (req, res) => {
-        res.status(404)
-        res.redirect(`${baseUrl}/404.html`)
+
+      app.use((req, res, next) => {
+        if (req.method === 'GET') {
+          const p = url.parse(req.url)
+
+          // Set allowed extensions
+          if (/(\/[^\.]+\/?|\.(html|md))$/.test(p.pathname)) {
+            if (p.pathname.startsWith(baseUrl)) {
+              const fixedPathname = p.pathname.substr(baseUrl.length)
+
+              if (!['', 'index.html', 'reveal.html'].some((el) => el === fixedPathname)) {
+                req.url = `${baseUrl}404.html`
+                res.status(404)
+              }
+            }
+          }
+        }
+
+        next()
       })
     },
     historyApiFallback: false,

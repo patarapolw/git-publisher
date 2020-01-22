@@ -19,20 +19,34 @@ export default class App extends Vue {
   disqus = CONFIG.disqus
 
   updateMeta () {
-    const title = `${
-      this.currentPath === '.'
-        ? './'
-        : `./${this.currentPath}`
-    } - ${process.env.VUE_APP_TITLE}`
-    const description = this.description
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (!mutation.addedNodes) return
+    
+        if (mutation.target instanceof HTMLElement && mutation.target.querySelector('main')) {
+          const title = `${
+            this.currentPath === '.'
+              ? './'
+              : `./${this.currentPath}`
+          } - ${process.env.VUE_APP_TITLE}`
+          const description = this.description
+      
+          document.getElementsByTagName('title')[0].innerText = title;
+          (document.querySelector('[property="og:title"]') as any).content = title;
+          (document.querySelector('[property="twitter:title"]') as any).content = title;
+      
+          (document.querySelector('[name="description"]') as any).content = description;
+          (document.querySelector('[property="og:description"]') as any).content = description;
+          (document.querySelector('[property="twitter:description"]') as any).content = description
 
-    document.getElementsByTagName('title')[0].innerText = title;
-    (document.querySelector('[property="og:title"]') as any).content = title;
-    (document.querySelector('[property="twitter:title"]') as any).content = title;
-
-    (document.querySelector('[name="description"]') as any).content = description;
-    (document.querySelector('[property="og:description"]') as any).content = description;
-    (document.querySelector('[property="twitter:description"]') as any).content = description
+          observer.disconnect()
+        }
+      })
+    })
+    
+    this.$nextTick(() => {
+      observer.observe(this.$el, { childList: true, subtree: true })
+    })
   }
 
   get description () {
@@ -72,21 +86,23 @@ export default class App extends Vue {
   }
 
   @Watch('$route.path')
-  updatePath () {
+  async updatePath () {
+    this.type = null
+    this.html = ''
+
     this.currentPath = this.$route.path
       .replace(/index\.html$/, '')
-      .replace(/^\/data\//, '')
+      .replace(/^\/data/, '')
       .replace(/^\//, '') || '.'
 
-    setTimeout(() => {
-      this.updateMeta()
-    }, 100)
+    this.updateMeta()
 
     let d = deepfind(DREE, {
       relativePath: this.currentPath,
     })[0] as Dree
 
     if (!d) {
+      this.insertEmptyHtml()
       return
     }
 
@@ -120,6 +136,13 @@ export default class App extends Vue {
     })
   }
 
+  insertEmptyHtml() {
+    this.html = `
+      <main>
+        Please add <code>README.md</code> to the directory as the default content for the folder.
+      </main>`
+  }
+
   async updateFilePath () {
     let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/data/${this.filePath}`
     if (process.env.NODE_ENV !== 'production') {
@@ -128,10 +151,10 @@ export default class App extends Vue {
 
     const raw = await fetch(fetchUrl)
       .then((r) => {
-        if (r.status === 200 && !r.redirected) {
+        if (r.status === 200) {
           return r.text()
         }
-
+        this.insertEmptyHtml()
         return null
       })
 
@@ -139,10 +162,7 @@ export default class App extends Vue {
       setTimeout(() => {
         this.removeUtterances()
       }, 100)
-      this.html = `
-      <span>
-        Please add <code>README.md</code> to the directory as the default content for the folder.
-      </span>`
+      
       return
     } else {
       this.type = matter(raw).data.type || null
@@ -154,10 +174,7 @@ export default class App extends Vue {
         const make = new MakeHtml()
         this.html = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
         this.$nextTick(() => {
-          setTimeout(() => {
-            this.updateMeta()
-          }, 100)
-
+          this.updateMeta()
           make.activate()
         })
       })
@@ -173,7 +190,7 @@ export default class App extends Vue {
   upOneLevel () {
     const m = /^(.+)\/[^/]+$/.exec(this.dree.relativePath)
     if (m) {
-      this.$router.push(`/${m[1]}`)
+      this.$router.push(`/data/${m[1]}`)
     } else {
       this.$router.push('/data')
     }
