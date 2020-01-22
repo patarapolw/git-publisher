@@ -6,6 +6,7 @@ import matter from 'gray-matter'
 
 import { REPO, DREE, CONFIG, externalJs } from '@/global'
 import MakeHtml from '@/make-html'
+import { setMeta } from '@/utils/meta'
 
 @Component
 export default class App extends Vue {
@@ -14,47 +15,63 @@ export default class App extends Vue {
   currentPath = '.'
   filePath = 'README.md'
   folderPath = '.'
-  html = ''
+  
+  rawHtml = ''
+  rawHtmlStatus = 200
+
   type: string | null = null
   disqus = CONFIG.disqus
 
-  updateMeta () {
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (!mutation.addedNodes) return
-    
-        if (mutation.target instanceof HTMLElement && mutation.target.querySelector('main')) {
-          const title = `${
-            this.currentPath === '.'
-              ? './'
-              : `./${this.currentPath}`
-          } - ${process.env.VUE_APP_TITLE}`
-          const description = this.description
-      
-          document.getElementsByTagName('title')[0].innerText = title;
-          (document.querySelector('[property="og:title"]') as any).content = title;
-          (document.querySelector('[property="twitter:title"]') as any).content = title;
-      
-          (document.querySelector('[name="description"]') as any).content = description;
-          (document.querySelector('[property="og:description"]') as any).content = description;
-          (document.querySelector('[property="twitter:description"]') as any).content = description
-
-          observer.disconnect()
-        }
-      })
-    })
-    
-    this.$nextTick(() => {
-      observer.observe(this.$el, { childList: true, subtree: true })
-    })
+  get html () {
+    if (this.rawHtmlStatus === 200) {
+      return this.rawHtml
+    } else {
+      return `
+      <main>
+        Please add <code>README.md</code> to the directory as the default content for the folder.
+      </main>`
+    }
   }
 
-  get description () {
-    const div = this.$el.querySelector('main')
-    if (div) {
-      return div.innerText.substr(0, 140)
+  setHtml (s: string | null, status?: number) {
+    if (s !== null) {
+      this.rawHtml = s
     }
-    return ''
+    this.rawHtmlStatus = status || 200
+  }
+
+  async updateMeta () {
+    const doUpdateMeta = () => {
+      const title = `${
+        this.currentPath === '.'
+          ? './'
+          : `./${this.currentPath}`
+      } - ${process.env.VUE_APP_TITLE}`
+
+      const description = (() => {
+        const main = this.$el.querySelector('main')
+
+        if (main) {
+          return main.innerText.substr(0, 140)
+        }
+
+        return ''
+      })()
+
+      setMeta({ tagName: 'title', content: title })
+      setMeta({ property: 'og:title', content: title })
+      setMeta({ property: 'twitter:title', content: title })
+
+      setMeta({ name: 'description', content: description })
+      setMeta({ property: 'og:description', content: description })
+      setMeta({ property: 'twitter:description', content: description })
+    }
+
+    while (!this.rawHtmlStatus || !this.$el.getElementsByTagName('main')[0]) {
+      await new Promise((resolve) => setTimeout(resolve, 50))
+    }
+
+    doUpdateMeta()
   }
 
   get relativePathHtml () {
@@ -81,28 +98,26 @@ export default class App extends Vue {
     return `${process.env.BASE_URL}reveal.html?filePath=${encodeURIComponent(this.filePath)}`
   }
 
-  created () {
+  mounted () {
     this.updatePath()
   }
 
   @Watch('$route.path')
   async updatePath () {
     this.type = null
-    this.html = ''
+    this.rawHtmlStatus = 0
 
     this.currentPath = this.$route.path
       .replace(/index\.html$/, '')
       .replace(/^\/data/, '')
       .replace(/^\//, '') || '.'
 
-    this.updateMeta()
-
     let d = deepfind(DREE, {
       relativePath: this.currentPath,
     })[0] as Dree
 
     if (!d) {
-      this.insertEmptyHtml()
+      this.$router.push({ name: '404' })
       return
     }
 
@@ -136,13 +151,6 @@ export default class App extends Vue {
     })
   }
 
-  insertEmptyHtml() {
-    this.html = `
-      <main>
-        Please add <code>README.md</code> to the directory as the default content for the folder.
-      </main>`
-  }
-
   async updateFilePath () {
     let fetchUrl = `https://raw.githubusercontent.com/${REPO}/${CONFIG.branch}/data/${this.filePath}`
     if (process.env.NODE_ENV !== 'production') {
@@ -151,10 +159,18 @@ export default class App extends Vue {
 
     const raw = await fetch(fetchUrl)
       .then((r) => {
+        this.rawHtmlStatus = r.status
+
         if (r.status === 200) {
           return r.text()
         }
-        this.insertEmptyHtml()
+        
+        if (fetchUrl.endsWith('/README.md')) {
+          this.updateMeta()
+        } else {
+          this.$router.push({ name: '404', path: this.$route.path })
+        }
+
         return null
       })
 
@@ -172,14 +188,16 @@ export default class App extends Vue {
     if (this.type !== 'reveal') {
       externalJs.onReady(() => {
         const make = new MakeHtml()
-        this.html = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
+        this.rawHtml = make.make(raw!, (this.filePath.match(/\.(?:[^.]+)$/) || [])[0])
+        this.updateMeta()
+
         this.$nextTick(() => {
-          this.updateMeta()
           make.activate()
         })
       })
     } else {
-      this.html = raw!
+      this.rawHtml = raw!
+      this.updateMeta()
     }
   }
 

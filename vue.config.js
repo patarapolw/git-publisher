@@ -40,7 +40,10 @@ module.exports = deepMerge({
   pages: {
     index: './src/main.ts',
     reveal: './src/reveal.ts',
-    404: './src/404.ts'
+    404: {
+      entry: './src/main.ts',
+      template: './public/index.html'
+    }
   },
   devServer: {
     before (app) {
