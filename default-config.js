@@ -12,9 +12,13 @@ module.exports = {
     excludeEmptyDirectories: true,
   },
   /**
-   * Path the scan the directory tree
+   * Path the scan the directory tree:
+   *
+   * must start with ./data
+   *
+   * cannot be set
    */
-  data: './data',
+  // data: './data',
   /**
    * Additional path to JavaScript files, to be auto-loaded. Accepts globbing.
    */
@@ -25,7 +29,7 @@ module.exports = {
    * Config object to pass to Vue Router (currently only mode matters)
    */
   vueRouter: {
-    mode: 'hash',
+    mode: 'history',
   },
   /**
    * Config object to pass to vue.config.js

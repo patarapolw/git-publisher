@@ -1,7 +1,6 @@
 const path = require('path')
 const fs = require('fs')
 const { execSync } = require('child_process')
-const { URL } = require('url')
 
 const { scan: dreeScan } = require('dree')
 const glob = require('fast-glob')
@@ -12,7 +11,7 @@ const { getConfig, deepMerge } = require('./config')
 process.env.ROOT = path.resolve(process.env.ROOT)
 
 const config = getConfig(process.env.ROOT)
-const dree = dreeScan(path.resolve(process.env.ROOT, config.data), config.dree)
+const dree = dreeScan(path.resolve(process.env.ROOT, 'data'), config.dree)
 
 process.env.VUE_APP_CONFIG = JSON.stringify(config)
 process.env.VUE_APP_ROOT = process.env.ROOT
@@ -28,7 +27,7 @@ const repoUrl = execSync('git config --get remote.origin.url', {
 const [_, repoAuthor, repoBase] = /([^/]+)\/([^/]+)\.git$/.exec(repoUrl.trim()) || []
 
 process.env.VUE_APP_REPO = repoUrl
-process.env.VUE_APP_TITLE = config.name || config.pkg.name || `${repoAuthor}/${repoBase}`
+process.env.VUE_APP_TITLE = config.name || `${repoAuthor}/${repoBase}`
 process.env.VUE_APP_ROUTER_MODE = config.vueRouter.mode
 
 const baseUrl = !config.baseUrl ? `/${repoBase}/` : '/'
@@ -39,10 +38,17 @@ module.exports = deepMerge({
   pages: {
     index: './src/main.ts',
     reveal: './src/reveal.ts',
+    '404': './src/404.ts'
   },
   devServer: {
     before (app) {
-      app.use(`${baseUrl}data`, serveStatic(path.resolve(process.env.ROOT, config.data)))
+      app.use(`${baseUrl}data`, serveStatic(path.resolve(process.env.ROOT, 'data')))
+    },
+    after (app) {
+      app.use(`${baseUrl}*`, (req, res) => {
+        res.status(404)
+        res.redirect(`${baseUrl}/404.html`)
+      })
     },
     historyApiFallback: false,
   },

@@ -1,4 +1,4 @@
-import { Vue, Component } from 'vue-property-decorator'
+import { Vue, Component, Watch } from 'vue-property-decorator'
 import { Dree } from 'dree'
 import deepfind from '@patarapolw/deepfind'
 import h from 'hyperscript'
@@ -19,7 +19,11 @@ export default class App extends Vue {
   disqus = CONFIG.disqus
 
   updateMeta () {
-    const title = `${this.filePath} - ${process.env.VUE_APP_TITLE}`
+    const title = `${
+      this.currentPath === '.'
+        ? './'
+        : `./${this.currentPath}`
+    } - ${process.env.VUE_APP_TITLE}`
     const description = this.description
 
     document.getElementsByTagName('title')[0].innerText = title;
@@ -41,11 +45,11 @@ export default class App extends Vue {
 
   get relativePathHtml () {
     if (this.folderPath === '.') {
-      return h('a', { href: '#' }, '.').outerHTML
+      return h('a', { href: this.$router.resolve('/data').href }, '.').outerHTML
     } else {
       const pathArray = [
-        h('a', { href: '#' }, '.'),
-        ...this.folderPath.split('/').map((p) => h('a', { href: `#${p}` }, p)),
+        h('a', { href: this.$router.resolve('/data').href }, '.'),
+        ...this.folderPath.split('/').map((p) => h('a', { href: this.$router.resolve(`/data/${p}`).href }, p)),
       ].reduce((a, el) => {
         return [
           ...a,
@@ -64,24 +68,24 @@ export default class App extends Vue {
   }
 
   created () {
-    this.currentPath = location.hash.replace(/^#/, '')
-    window.addEventListener('hashchange', () => {
-      this.currentPath = location.hash.replace(/^#/, '')
-      this.$nextTick(() => {
-        this.updatePath()
-      })
-    })
-    this.$nextTick(() => {
-      this.updatePath()
-    })
+    this.updatePath()
   }
 
+  @Watch('$route.path')
   updatePath () {
-    this.currentPath = decodeURIComponent(this.currentPath)
+    this.currentPath = this.$route.path.replace(/^\/data\//, '').replace(/^\//, '') || '.'
+
+    setTimeout(() => {
+      this.updateMeta()
+    }, 100)
 
     let d = deepfind(DREE, {
-      relativePath: this.currentPath || '.',
+      relativePath: this.currentPath,
     })[0] as Dree
+
+    if (!d) {
+      return
+    }
 
     if (d.type !== 'directory') {
       this.filePath = this.currentPath
@@ -91,7 +95,7 @@ export default class App extends Vue {
       })[0] as Dree
     } else {
       this.filePath = './README.md'
-      this.folderPath = this.currentPath || '.'
+      this.folderPath = this.currentPath
     }
 
     if (this.filePath.startsWith('./')) {
@@ -120,11 +124,13 @@ export default class App extends Vue {
     }
 
     const raw = await fetch(fetchUrl)
-      .then((r) => r.status === 200 ? r.text() : null)
+      .then((r) => {
+        if (r.status === 200 && !r.redirected) {
+          return r.text()
+        }
 
-    setTimeout(() => {
-      this.updateMeta()
-    }, 100)
+        return null
+      })
 
     if (raw === null) {
       setTimeout(() => {
@@ -157,15 +163,15 @@ export default class App extends Vue {
   }
 
   onItemClicked (d: Dree) {
-    location.href = '#' + d.relativePath
+    this.$router.push(`/data/${d.relativePath}`)
   }
 
   upOneLevel () {
     const m = /^(.+)\/[^/]+$/.exec(this.dree.relativePath)
     if (m) {
-      location.hash = m[1]
+      this.$router.push(`/${m[1]}`)
     } else {
-      location.hash = ''
+      this.$router.push('/data')
     }
   }
 
