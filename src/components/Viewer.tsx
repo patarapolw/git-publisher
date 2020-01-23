@@ -2,7 +2,6 @@
 import { jsx, css } from '@emotion/core'
 import { Link, StaticQuery, graphql } from 'gatsby'
 import { Helmet } from 'react-helmet'
-import { globalHistory } from '@reach/router'
 import Icon from '@mdi/react'
 import { mdiGithubCircle, mdiFolderOutline, mdiFolder, mdiFileOutline } from '@mdi/js'
 // @ts-ignore
@@ -27,6 +26,7 @@ const Viewer = ({ currentPath, folders, files, isFile, type, html }: {
               repoAuthor
               repoName
               disqus
+              baseUrl
             }
           }
         }
@@ -37,7 +37,7 @@ const Viewer = ({ currentPath, folders, files, isFile, type, html }: {
           ? currentPath
           : (folderPath ? `${folderPath}/README.md` : 'README.md')
 
-        const { repoAuthor, repoName, disqus } = $data.site.siteMetadata
+        const { repoAuthor, repoName, disqus, baseUrl } = $data.site.siteMetadata
         const githubUrl = `https://github.com/${repoAuthor}/${repoName}`
 
         const title = `${currentPath || '.'} - ${repoAuthor}/${repoName}`
@@ -145,7 +145,9 @@ const Viewer = ({ currentPath, folders, files, isFile, type, html }: {
                   { typeof html === 'string'
                     ? (
                       type === 'reveal' ? (
-                        <iframe frameBorder="0" src={`${globalHistory.location.origin}/reveal/${filePath}`} css={css`
+                        <iframe frameBorder="0" src={`${
+                          process.env.NODE_ENV === 'development' ? '/' : `${baseUrl}/`
+                        }reveal/${filePath}`} css={css`
                           width: 100%;
                           height: 40vw;
           
@@ -168,7 +170,9 @@ const Viewer = ({ currentPath, folders, files, isFile, type, html }: {
                 { typeof html === 'string' ? (
                   disqus ? (
                     <Disqus config={{
-                      url: `${globalHistory.location.origin}/data/${filePath}`,
+                      url: `${
+                        process.env.NODE_ENV === 'development' ? '/' : `${baseUrl}/`
+                      }/data/${filePath}`,
                       identifier: currentPath,
                       title,
                     }} />
