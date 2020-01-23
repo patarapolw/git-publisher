@@ -1,40 +1,11 @@
 module.exports = {
   /**
-   * The config to be sent to https://www.npmjs.com/package/dree
+   * Markdown (Showdown.js) and Pug extenssions (filters)
    */
-  dree: {
-    exclude: [
-      /\.git/,
-      /node_modules/,
-      /\.cache/,
-    ],
-    extensions: ['md', 'pug'],
-    excludeEmptyDirectories: true,
+  plugins: {
+    pug: {},
+    markdown: {},
   },
-  /**
-   * Path the scan the directory tree:
-   *
-   * must start with ./data
-   *
-   * cannot be set
-   */
-  // data: './data',
-  /**
-   * Additional path to JavaScript files, to be auto-loaded. Accepts globbing.
-   */
-  plugins: [
-    'plugins/**/*.js',
-  ],
-  /**
-   * Config object to pass to Vue Router (currently only mode matters)
-   */
-  vueRouter: {
-    mode: 'history',
-  },
-  /**
-   * Config object to pass to vue.config.js
-   */
-  vueConfig: {},
   /**
    * GitHub branch to look for
    */
@@ -43,6 +14,9 @@ module.exports = {
    * Set baseUrl to deploy elsewhere than GitHub Pages, for example "/"
    */
   baseUrl: '',
+  /**
+   * Output directory relative to ROOT
+   */
   outputDir: './dist',
   /**
    * Disqus shortname
