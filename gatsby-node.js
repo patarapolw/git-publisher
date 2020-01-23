@@ -217,10 +217,13 @@ exports.onPostBuild = () => {
     path.join(__dirname, 'public'),
     path.join(pkgPath, 'dist'),
   )
-  fs.copySync(
-    path.join(process.env.ROOT, 'media'),
-    path.join(pkgPath, 'dist/media'),
-  )
+
+  if (fs.existsSync(path.join(process.env.ROOT, 'media'))) {
+    fs.copySync(
+      path.join(process.env.ROOT, 'media'),
+      path.join(pkgPath, 'dist/media'),
+    )
+  }
 }
 
 exports.onCreateDevServer = ({ app }) => {

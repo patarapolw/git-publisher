@@ -2,16 +2,21 @@ import React, { useEffect } from 'react'
 import '@patarapolw/reveal-md-core/umd/index.css'
 
 const Reveal = ({ pageContext }: any) => {
-  useEffect(() => {
-    (async () => {
-      const RevealMd = (await import('@patarapolw/reveal-md-core')).default
+  let isInit = false
 
-      new RevealMd(
-        (s) => s,
-        null,
-        pageContext.html,
-      )
-    })()
+  useEffect(() => {
+    if (!isInit) {
+      (async () => {
+        const RevealMd = (await import('@patarapolw/reveal-md-core')).default
+  
+        new RevealMd(
+          (s) => s,
+          null,
+          pageContext.html,
+        )
+      })()
+      isInit = true
+    }
   })
 
   return (
