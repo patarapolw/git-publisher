@@ -1,6 +1,6 @@
-const fs = require('fs')
 const path = require('path')
 
+const fs = require('fs-extra')
 const matter = require('gray-matter')
 const pug = require('pug')
 const showdown = require('showdown')

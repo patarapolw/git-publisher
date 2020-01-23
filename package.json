@@ -19,6 +19,7 @@
     "cheerio": "^1.0.0-rc.3",
     "dotenv": "^8.2.0",
     "dree": "^2.4.10",
+    "fs-extra": "^8.1.0",
     "gatsby": "^2.19.1",
     "gatsby-plugin-disqus": "^1.1.4",
     "gatsby-plugin-typescript": "^2.1.26",
