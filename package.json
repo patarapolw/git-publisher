@@ -21,7 +21,7 @@
     "dree": "^2.4.10",
     "fs-extra": "^8.1.0",
     "gatsby": "^2.19.1",
-    "gatsby-plugin-disqus": "^1.1.4",
+    "gatsby-plugin-disqus": "^1.2.0",
     "gatsby-plugin-typescript": "^2.1.26",
     "gatsby-source-filesystem": "^2.1.46",
     "gray-matter": "^4.0.2",
